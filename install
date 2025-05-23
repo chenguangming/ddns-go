@@ -1,0 +1,5 @@
+#!/bin/bash
+cp out/arm64/libddns-go.so $1/app/src/main/jniLibs/arm64-v8a/
+cp out/arm/libddns-go.so $1/app/src/main/jniLibs/armeabi-v7a/
+cp out/x86/libddns-go.so $1/app/src/main/jniLibs/x86/
+cp out/x64/libddns-go.so $1/app/src/main/jniLibs/x86_64/

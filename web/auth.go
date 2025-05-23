@@ -14,6 +14,11 @@ type ViewFunc func(http.ResponseWriter, *http.Request)
 // Auth 验证Token是否已经通过
 func Auth(f ViewFunc) ViewFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		if util.IsLocalHost(r.RemoteAddr) {
+			f(w, r) // 本机登录不校验密码
+			return
+		}
+
 		cookieInWeb, err := r.Cookie(cookieName)
 		if err != nil {
 			http.Redirect(w, r, "./login", http.StatusTemporaryRedirect)

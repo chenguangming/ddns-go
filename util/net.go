@@ -31,6 +31,27 @@ func IsPrivateNetwork(remoteAddr string) bool {
 	return false
 }
 
+func IsLocalHost(remoteAddr string) bool {
+	// removing optional port from remoteAddr
+	if strings.HasPrefix(remoteAddr, "[") { // ipv6
+		if index := strings.LastIndex(remoteAddr, "]"); index != -1 {
+			remoteAddr = remoteAddr[1:index]
+		} else {
+			return false
+		}
+	} else { // ipv4
+		if index := strings.LastIndex(remoteAddr, ":"); index != -1 {
+			remoteAddr = remoteAddr[:index]
+		}
+	}
+
+	if ip := net.ParseIP(remoteAddr); ip != nil {
+		return ip.IsLoopback()
+	}
+
+	return false
+}
+
 // GetRequestIPStr get IP string from request
 func GetRequestIPStr(r *http.Request) (addr string) {
 	addr = "Remote: " + r.RemoteAddr
